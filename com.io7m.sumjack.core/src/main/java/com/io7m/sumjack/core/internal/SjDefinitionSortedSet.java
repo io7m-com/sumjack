@@ -20,15 +20,13 @@ import com.io7m.sumjack.core.SjDefinitionType;
 import com.io7m.sumjack.core.SjGeneratorConfiguration;
 import tools.jackson.databind.node.ObjectNode;
 
-import java.util.Optional;
-
-final class SjDefinitionPlainObject
+final class SjDefinitionSortedSet
   implements SjDefinitionType
 {
   private final SjFullyResolvedType type;
   private final SjGeneratorConfiguration configuration;
 
-  SjDefinitionPlainObject(
+  SjDefinitionSortedSet(
     final SjGeneratorConfiguration inConfiguration,
     final SjFullyResolvedType inType)
   {
@@ -39,48 +37,18 @@ final class SjDefinitionPlainObject
   @Override
   public ObjectNode execute()
   {
-    final var mapper =
-      this.configuration.mapper();
+    final var param =
+      this.type.type().getTypeBindings()
+        .getBoundType(0);
 
-    final var props =
-      mapper.createObjectNode();
-    final var required =
-      mapper.createArrayNode();
-
-    for (final var entry : this.type.methods().entrySet()) {
-      final var name =
-        entry.getKey();
-      final var description =
-        Optional.ofNullable(this.type.methodDescriptions().get(name));
-
-      final var ref = mapper.createObjectNode();
-      description.ifPresent(text -> {
-        ref.put("description", text);
-      });
-      ref.put(
-        "$ref",
-        SjFullyResolvedType.refName(entry.getValue().getReturnType())
-      );
-      props.set(name, ref);
-    }
-
-    this.type.typeProperty().ifPresent(name -> {
-      final var typeProp = mapper.createObjectNode();
-      typeProp.put("type", "string");
-      typeProp.put("pattern", name);
-      props.set("@type", typeProp);
-      required.add("@type");
-    });
-
-    for (final var name : this.type.methodRequired()) {
-      required.add(name);
-    }
+    final var mapper = this.configuration.mapper();
+    final var ref = mapper.createObjectNode();
+    ref.put("$ref", SjFullyResolvedType.refName(param));
 
     final var object = mapper.createObjectNode();
     this.type.putDescription(object);
-    object.put("type", "object");
-    object.set("properties", props);
-    object.set("required", required);
+    object.put("type", "array");
+    object.set("items", ref);
     return object;
   }
 }

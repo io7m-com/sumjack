@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import static com.io7m.sumjack.core.standard.SjOffsetDateTime.OFFSET_DATE_TIME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SjGeneratorTest
@@ -188,6 +189,23 @@ public final class SjGeneratorTest
         .build();
 
     runCheck(config, "OffsetDateTime.json");
+  }
+
+  @Test
+  public void testObject()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(Object.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var ex =
+      assertThrows(SjException.class, generator::execute);
+
+    assertEquals("error-no-definition", ex.errorCode());
   }
 
   private static void runCheck(

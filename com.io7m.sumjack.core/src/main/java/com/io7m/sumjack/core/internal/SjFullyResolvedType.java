@@ -101,4 +101,10 @@ record SjFullyResolvedType(
     final var clazz = this.type.getErasedType();
     return Objects.equals(clazz, target);
   }
+
+  public boolean isRecord()
+  {
+    final var clazz = this.type.getErasedType();
+    return clazz.isRecord();
+  }
 }
