@@ -22,14 +22,18 @@ import com.io7m.sumjack.core.SjGenerators;
 import com.io7m.sumjack.core.standard.SjPrimitives;
 import com.io7m.sumjack.lanark.SjDottedName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SjGeneratorTest
 {
@@ -39,6 +43,27 @@ public final class SjGeneratorTest
       .setId(URI.create("urn:example.com"))
       .setTitle("Example Schema")
       .setMapper(JsonMapper.shared());
+  }
+
+  @Test
+  public void testSimple0Write(
+    final @TempDir Path directory)
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleBase0Type.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var fileName =
+      directory.resolve("file.json");
+    final var r =
+      generator.executeAndWrite(fileName);
+
+    assertTrue(Files.isRegularFile(fileName));
+    assertEquals(1, Files.list(directory).toList().size());
   }
 
   @Test

@@ -311,6 +311,12 @@ public final class SjGenerator
   }
 
   @Override
+  public SjGeneratorConfiguration configuration()
+  {
+    return this.configuration;
+  }
+
+  @Override
   public ObjectNode execute()
     throws SjException
   {
