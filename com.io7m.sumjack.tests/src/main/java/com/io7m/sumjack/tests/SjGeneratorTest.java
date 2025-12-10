@@ -31,6 +31,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.io7m.sumjack.core.standard.SjOffsetDateTime.OFFSET_DATE_TIME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -174,6 +175,19 @@ public final class SjGeneratorTest
         .build();
 
     runCheck(config, "SimpleContainsDottedName.json");
+  }
+
+  @Test
+  public void testOffsetDateTime()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsODT.class)
+        .addDefinitions(OFFSET_DATE_TIME)
+        .build();
+
+    runCheck(config, "OffsetDateTime.json");
   }
 
   private static void runCheck(
