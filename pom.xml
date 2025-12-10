@@ -19,6 +19,7 @@
   <url>https://www.io7m.com/software/sumjack</url>
 
   <modules>
+    <module>com.io7m.sumjack.bom</module>
     <module>com.io7m.sumjack.core</module>
     <module>com.io7m.sumjack.lanark</module>
     <module>com.io7m.sumjack.tests</module>
