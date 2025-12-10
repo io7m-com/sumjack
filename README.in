@@ -1,0 +1,4 @@
+
+## Sumjack
+
+A JSON schema generator for [Jackson](https://jackson.tools) annotated Java types.

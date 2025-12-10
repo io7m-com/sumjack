@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:example.com","title":"Example Schema","oneOf":[{"$ref":"#/$defs/TrafficLight"}],"$defs":{"String":{"type":"string"},"TrafficLight":{"type":"string","enum":["RED","GREEN","YELLOW"]}}}
