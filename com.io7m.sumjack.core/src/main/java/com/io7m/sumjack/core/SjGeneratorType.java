@@ -24,6 +24,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
@@ -111,7 +112,7 @@ public interface SjGeneratorType
   {
     return this.executeAndWrite(
       file,
-      Paths.get(file + ".tmp")
+      Paths.get(file + "." + UUID.randomUUID())
     );
   }
 }
