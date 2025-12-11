@@ -14,20 +14,18 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-open module com.io7m.sumjack.tests
+package com.io7m.sumjack.tests;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+import java.time.OffsetDateTime;
+import java.util.Set;
+
+public record SimpleContainsODT(
+  @JsonProperty("Time")
+  @JsonPropertyDescription("Some time.")
+  OffsetDateTime time)
 {
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.engine;
-  requires org.junit.platform.commons;
-  requires org.junit.platform.engine;
-  requires org.junit.platform.launcher;
 
-  requires com.io7m.lanark.core;
-  requires com.io7m.sumjack.core;
-  requires tools.jackson.databind;
-  requires com.io7m.sumjack.lanark;
-  requires org.slf4j;
-  requires com.io7m.seltzer.slf4j;
-
-  exports com.io7m.sumjack.tests;
 }

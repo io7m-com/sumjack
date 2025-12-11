@@ -27,6 +27,31 @@ import com.io7m.sumjack.core.SjGeneratorConfiguration;
 public enum SjPrimitives implements SjDefinitionProviderType
 {
   /**
+   * java.lang.boolean
+   */
+
+  BOOLEAN {
+    @Override
+    public String typeName()
+    {
+      return boolean.class.getCanonicalName();
+    }
+
+    @Override
+    public SjDefinitionType create(
+      final SjGeneratorConfiguration configuration)
+    {
+      return () -> {
+        final var mapper = configuration.mapper();
+        final var object = mapper.createObjectNode();
+        object.put("type", "boolean");
+        object.put("description", "A boolean value.");
+        return object;
+      };
+    }
+  },
+
+  /**
    * java.lang.byte
    */
 
@@ -159,5 +184,59 @@ public enum SjPrimitives implements SjDefinitionProviderType
         return object;
       };
     }
-  }
+  },
+
+  /**
+   * java.lang.double
+   */
+
+  DOUBLE {
+    @Override
+    public String typeName()
+    {
+      return double.class.getCanonicalName();
+    }
+
+    @Override
+    public SjDefinitionType create(
+      final SjGeneratorConfiguration configuration)
+    {
+      return () -> {
+        final var mapper = configuration.mapper();
+        final var object = mapper.createObjectNode();
+        object.put("type", "number");
+        object.put("minimum", 2.2250738585072014e-308);
+        object.put("maximum", 1.7976931348623157e308);
+        object.put("description", "An IEEE764 64-bit floating point value.");
+        return object;
+      };
+    }
+  },
+
+  /**
+   * java.lang.float
+   */
+
+  FLOAT {
+    @Override
+    public String typeName()
+    {
+      return float.class.getCanonicalName();
+    }
+
+    @Override
+    public SjDefinitionType create(
+      final SjGeneratorConfiguration configuration)
+    {
+      return () -> {
+        final var mapper = configuration.mapper();
+        final var object = mapper.createObjectNode();
+        object.put("type", "number");
+        object.put("minimum", 1.1754943508222875e-38);
+        object.put("maximum", 3.4028234663852886e38);
+        object.put("description", "An IEEE764 32-bit floating point value.");
+        return object;
+      };
+    }
+  },
 }

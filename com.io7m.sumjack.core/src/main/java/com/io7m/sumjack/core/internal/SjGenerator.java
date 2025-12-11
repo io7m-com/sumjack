@@ -45,6 +45,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Stream;
@@ -311,6 +313,12 @@ public final class SjGenerator
   }
 
   @Override
+  public SjGeneratorConfiguration configuration()
+  {
+    return this.configuration;
+  }
+
+  @Override
   public ObjectNode execute()
     throws SjException
   {
@@ -403,8 +411,14 @@ public final class SjGenerator
       return new SjDefinitionPrimitive(this.configuration, type);
     }
 
+    if (type.isBaseType(SortedMap.class)) {
+      return new SjDefinitionSortedMap(this.configuration, type);
+    }
     if (type.isBaseType(Map.class)) {
       return new SjDefinitionMap(this.configuration, type);
+    }
+    if (type.isBaseType(SortedSet.class)) {
+      return new SjDefinitionSortedSet(this.configuration, type);
     }
     if (type.isBaseType(Set.class)) {
       return new SjDefinitionSet(this.configuration, type);
@@ -416,7 +430,11 @@ public final class SjGenerator
       return new SjDefinitionOptional(this.configuration, type);
     }
 
-    return new SjDefinitionPlainObject(this.configuration, type);
+    if (type.isRecord()) {
+      return new SjDefinitionRecord(this.configuration, type);
+    }
+
+    return new SjDefinitionFailing(this.configuration, type);
   }
 
   private void collectTypeRoot()

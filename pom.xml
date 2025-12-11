@@ -11,7 +11,7 @@
 
   <groupId>com.io7m.sumjack</groupId>
   <artifactId>com.io7m.sumjack</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <name>com.io7m.sumjack</name>
@@ -19,6 +19,7 @@
   <url>https://www.io7m.com/software/sumjack</url>
 
   <modules>
+    <module>com.io7m.sumjack.bom</module>
     <module>com.io7m.sumjack.core</module>
     <module>com.io7m.sumjack.lanark</module>
     <module>com.io7m.sumjack.tests</module>
@@ -28,14 +29,14 @@
     <io7m.workID>621fe9d1-6289-499c-a8c8-c4211f7aad72</io7m.workID>
 
     <!-- Configuration. -->
-    <io7m.api.previousVersion>0.0.1</io7m.api.previousVersion>
+    <io7m.api.previousVersion>1.0.0</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
 
     <!-- io7m dependencies. -->
     <com.io7m.quarrel.version>1.6.1</com.io7m.quarrel.version>
 
     <!-- Third-party dependencies. -->
-    <org.immutables.version>2.11.6</org.immutables.version>
+    <org.immutables.version>2.11.7</org.immutables.version>
   </properties>
 
   <licenses>

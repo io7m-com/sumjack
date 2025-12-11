@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <c:changelog project="com.io7m.sumjack" xmlns:c="urn:com.io7m.changelog:4.0">
-  <c:releases/>
+  <c:releases>
+    <c:release date="2025-12-11T21:28:08+00:00" is-open="false" ticket-system="com.github.io7m.sumjack" version="1.0.0">
+      <c:changes>
+        <c:change date="2025-12-11T00:00:00+00:00" summary="Initial version."/>
+      </c:changes>
+    </c:release>
+  </c:releases>
   <c:ticket-systems>
     <c:ticket-system default="true" id="com.github.io7m.sumjack" url="https://github.com/io7m-com/sumjack/issues/"/>
   </c:ticket-systems>

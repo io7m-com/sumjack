@@ -14,20 +14,17 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-open module com.io7m.sumjack.tests
+package com.io7m.sumjack.tests;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record Vector3(
+  @JsonProperty(value = "X", required = true)
+  double x,
+  @JsonProperty(value = "Y", required = true)
+  double y,
+  @JsonProperty(value = "Z", required = true)
+  double z)
 {
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.engine;
-  requires org.junit.platform.commons;
-  requires org.junit.platform.engine;
-  requires org.junit.platform.launcher;
 
-  requires com.io7m.lanark.core;
-  requires com.io7m.sumjack.core;
-  requires tools.jackson.databind;
-  requires com.io7m.sumjack.lanark;
-  requires org.slf4j;
-  requires com.io7m.seltzer.slf4j;
-
-  exports com.io7m.sumjack.tests;
 }

@@ -14,20 +14,43 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-open module com.io7m.sumjack.tests
+package com.io7m.sumjack.core.standard;
+
+import com.io7m.sumjack.core.SjDefinitionProviderType;
+import com.io7m.sumjack.core.SjDefinitionType;
+import com.io7m.sumjack.core.SjGeneratorConfiguration;
+
+import java.math.BigInteger;
+
+/**
+ * A big integer.
+ */
+
+public enum SjBigInteger
+  implements SjDefinitionProviderType
 {
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.engine;
-  requires org.junit.platform.commons;
-  requires org.junit.platform.engine;
-  requires org.junit.platform.launcher;
+  /**
+   * A big integer.
+   */
 
-  requires com.io7m.lanark.core;
-  requires com.io7m.sumjack.core;
-  requires tools.jackson.databind;
-  requires com.io7m.sumjack.lanark;
-  requires org.slf4j;
-  requires com.io7m.seltzer.slf4j;
+  BIG_INTEGER;
 
-  exports com.io7m.sumjack.tests;
+  @Override
+  public String typeName()
+  {
+    return BigInteger.class.getSimpleName();
+  }
+
+  @Override
+  public SjDefinitionType create(
+    final SjGeneratorConfiguration configuration)
+  {
+    return () -> {
+      final var mapper = configuration.mapper();
+      final var object = mapper.createObjectNode();
+      object.put("description", "An arbitrary integer.");
+      object.put("type", "integer");
+      return object;
+    };
+  }
 }

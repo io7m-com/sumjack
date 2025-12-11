@@ -14,20 +14,42 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-open module com.io7m.sumjack.tests
+package com.io7m.sumjack.core.standard;
+
+import com.io7m.sumjack.core.SjDefinitionProviderType;
+import com.io7m.sumjack.core.SjDefinitionType;
+import com.io7m.sumjack.core.SjGeneratorConfiguration;
+
+/**
+ * A UUID string.
+ */
+
+public enum SjUUID
+  implements SjDefinitionProviderType
 {
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.engine;
-  requires org.junit.platform.commons;
-  requires org.junit.platform.engine;
-  requires org.junit.platform.launcher;
+  /**
+   * A UUID string.
+   */
 
-  requires com.io7m.lanark.core;
-  requires com.io7m.sumjack.core;
-  requires tools.jackson.databind;
-  requires com.io7m.sumjack.lanark;
-  requires org.slf4j;
-  requires com.io7m.seltzer.slf4j;
+  UUID;
 
-  exports com.io7m.sumjack.tests;
+  @Override
+  public String typeName()
+  {
+    return java.util.UUID.class.getSimpleName();
+  }
+
+  @Override
+  public SjDefinitionType create(
+    final SjGeneratorConfiguration configuration)
+  {
+    return () -> {
+      final var mapper = configuration.mapper();
+      final var object = mapper.createObjectNode();
+      object.put("description", "An RFC 9562 UUID string.");
+      object.put("type", "string");
+      object.put("format", "uuid");
+      return object;
+    };
+  }
 }

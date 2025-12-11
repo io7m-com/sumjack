@@ -16,29 +16,68 @@
 
 package com.io7m.sumjack.tests;
 
+import com.io7m.seltzer.slf4j.SSLogging;
 import com.io7m.sumjack.core.SjException;
 import com.io7m.sumjack.core.SjGeneratorConfiguration;
 import com.io7m.sumjack.core.SjGenerators;
 import com.io7m.sumjack.core.standard.SjPrimitives;
+import com.io7m.sumjack.core.standard.SjUUID;
 import com.io7m.sumjack.lanark.SjDottedName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
 
+import static com.io7m.sumjack.core.standard.SjBase64ByteArray.BASE64_BYTE_ARRAY;
+import static com.io7m.sumjack.core.standard.SjBigDecimal.BIG_DECIMAL;
+import static com.io7m.sumjack.core.standard.SjBigInteger.BIG_INTEGER;
+import static com.io7m.sumjack.core.standard.SjOffsetDateTime.OFFSET_DATE_TIME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SjGeneratorTest
 {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(SjGeneratorTest.class);
+
   public static SjGeneratorConfiguration.Builder builder()
   {
     return SjGeneratorConfiguration.builder()
       .setId(URI.create("urn:example.com"))
       .setTitle("Example Schema")
       .setMapper(JsonMapper.shared());
+  }
+
+  @Test
+  public void testSimple0Write(
+    final @TempDir Path directory)
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleBase0Type.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var fileName =
+      directory.resolve("file.json");
+    final var r =
+      generator.executeAndWrite(fileName);
+
+    assertTrue(Files.isRegularFile(fileName));
+    assertEquals(1, Files.list(directory).toList().size());
   }
 
   @Test
@@ -149,6 +188,120 @@ public final class SjGeneratorTest
         .build();
 
     runCheck(config, "SimpleContainsDottedName.json");
+  }
+
+  @Test
+  public void testOffsetDateTime()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsODT.class)
+        .addDefinitions(OFFSET_DATE_TIME)
+        .build();
+
+    runCheck(config, "OffsetDateTime.json");
+  }
+
+  @Test
+  public void testUUID()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsUUID.class)
+        .addDefinitions(SjUUID.UUID)
+        .build();
+
+    runCheck(config, "UUID.json");
+  }
+
+  @Test
+  public void testBase64ByteArray()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsByteArray.class)
+        .addDefinitions(BASE64_BYTE_ARRAY)
+        .build();
+
+    runCheck(config, "Base64ByteArray.json");
+  }
+
+  @Test
+  public void testBigDecimal()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsBigDecimal.class)
+        .addDefinitions(BIG_DECIMAL)
+        .build();
+
+    runCheck(config, "BigDecimal.json");
+  }
+
+  @Test
+  public void testBigInteger()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsBigInteger.class)
+        .addDefinitions(BIG_INTEGER)
+        .build();
+
+    runCheck(config, "BigInteger.json");
+  }
+
+  @Test
+  public void testObject()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(Object.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var ex =
+      assertThrows(SjException.class, generator::execute);
+
+    SSLogging.logMDC(LOG, Level.DEBUG, ex);
+    assertEquals("error-no-definition", ex.errorCode());
+  }
+
+  @Test
+  public void testVector3()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(Vector3.class)
+        .addDefinitions(SjPrimitives.DOUBLE)
+        .build();
+
+    runCheck(config, "Vector3.json");
+  }
+
+  @Test
+  public void testGeneric()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(Generic.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var ex =
+      assertThrows(SjException.class, generator::execute);
+
+    SSLogging.logMDC(LOG, Level.DEBUG, ex);
+    assertEquals("error-no-definition", ex.errorCode());
   }
 
   private static void runCheck(

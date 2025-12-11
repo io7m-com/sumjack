@@ -9,7 +9,7 @@
   <parent>
     <artifactId>com.io7m.sumjack</artifactId>
     <groupId>com.io7m.sumjack</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>com.io7m.sumjack.tests</artifactId>
@@ -42,6 +42,14 @@
     <dependency>
       <groupId>com.io7m.lanark</groupId>
       <artifactId>com.io7m.lanark.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.io7m.seltzer</groupId>
+      <artifactId>com.io7m.seltzer.slf4j</artifactId>
     </dependency>
 
     <dependency>
