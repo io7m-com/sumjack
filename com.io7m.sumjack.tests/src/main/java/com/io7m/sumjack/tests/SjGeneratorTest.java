@@ -16,6 +16,7 @@
 
 package com.io7m.sumjack.tests;
 
+import com.io7m.seltzer.slf4j.SSLogging;
 import com.io7m.sumjack.core.SjException;
 import com.io7m.sumjack.core.SjGeneratorConfiguration;
 import com.io7m.sumjack.core.SjGenerators;
@@ -24,6 +25,9 @@ import com.io7m.sumjack.core.standard.SjUUID;
 import com.io7m.sumjack.lanark.SjDottedName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -44,6 +48,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SjGeneratorTest
 {
+  private static final Logger LOG =
+    LoggerFactory.getLogger(SjGeneratorTest.class);
+
   public static SjGeneratorConfiguration.Builder builder()
   {
     return SjGeneratorConfiguration.builder()
@@ -262,6 +269,7 @@ public final class SjGeneratorTest
     final var ex =
       assertThrows(SjException.class, generator::execute);
 
+    SSLogging.logMDC(LOG, Level.DEBUG, ex);
     assertEquals("error-no-definition", ex.errorCode());
   }
 
@@ -276,6 +284,24 @@ public final class SjGeneratorTest
         .build();
 
     runCheck(config, "Vector3.json");
+  }
+
+  @Test
+  public void testGeneric()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(Generic.class)
+        .build();
+
+    final var generator =
+      SjGenerators.create(config);
+    final var ex =
+      assertThrows(SjException.class, generator::execute);
+
+    SSLogging.logMDC(LOG, Level.DEBUG, ex);
+    assertEquals("error-no-definition", ex.errorCode());
   }
 
   private static void runCheck(
