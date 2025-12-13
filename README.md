@@ -54,7 +54,7 @@ final var generator =
 generator.executeAndWrite(outputFile);
 ```
 
-### Classes & Annotations
+### Classes And Annotations
 
 The `sumjack` package is opinionated about the kinds of classes for
 which it will generate schemas. Specifically, the package expects to be
