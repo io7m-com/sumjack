@@ -9,7 +9,7 @@
   <parent>
     <artifactId>com.io7m.sumjack</artifactId>
     <groupId>com.io7m.sumjack</groupId>
-    <version>2.0.0</version>
+    <version>2.1.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>com.io7m.sumjack.core</artifactId>
