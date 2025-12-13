@@ -81,6 +81,7 @@ final class SjDefinitionRecord
     object.put("type", "object");
     object.set("properties", props);
     object.set("required", required);
+    object.put("additionalProperties", false);
     return object;
   }
 }
