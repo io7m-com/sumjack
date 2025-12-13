@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.io7m.sumjack.core.SjDefinitionType;
 import com.io7m.sumjack.core.SjException;
 import com.io7m.sumjack.core.SjGeneratorConfiguration;
@@ -273,19 +274,26 @@ public final class SjGenerator
     }
   }
 
-  private static Optional<String> typePropertyValue(
+  private static Optional<SjTypeAttribute> typePropertyValue(
     final ResolvedType type)
   {
     final var allInterfaces = new HashSet<Class<?>>();
     findAllAnnotatedInterfaces(allInterfaces, type);
 
     for (final var interfaceT : allInterfaces) {
+      final var typeInfo =
+        interfaceT.getAnnotation(JsonTypeInfo.class);
       final var subtypes =
         interfaceT.getAnnotation(JsonSubTypes.class);
 
       for (final var subtype : subtypes.value()) {
         if (Objects.equals(subtype.value(), type.getErasedType())) {
-          return Optional.of(subtype.name());
+          return Optional.of(
+            new SjTypeAttribute(
+              typeInfo.property(),
+              subtype.name()
+            )
+          );
         }
       }
     }

@@ -34,7 +34,7 @@ record SjFullyResolvedType(
   SortedMap<String, String> methodDescriptions,
   List<SjFullyResolvedType> subclasses,
   Optional<String> description,
-  Optional<String> typeProperty)
+  Optional<SjTypeAttribute> typeProperty)
 {
   static String refName(
     final ResolvedType type)
