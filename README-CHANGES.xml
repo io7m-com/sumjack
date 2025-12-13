@@ -6,9 +6,10 @@
         <c:change date="2025-12-11T00:00:00+00:00" summary="Initial version."/>
       </c:changes>
     </c:release>
-    <c:release date="2025-12-13T18:20:16+00:00" is-open="true" ticket-system="com.github.io7m.sumjack" version="1.1.0">
+    <c:release date="2025-12-13T18:21:37+00:00" is-open="true" ticket-system="com.github.io7m.sumjack" version="1.1.0">
       <c:changes>
-        <c:change date="2025-12-13T18:20:16+00:00" summary="Respect @JsonTypeInfo to allow specifying a type attribute."/>
+        <c:change date="2025-12-13T00:00:00+00:00" summary="Respect @JsonTypeInfo to allow specifying a type attribute."/>
+        <c:change date="2025-12-13T18:21:37+00:00" summary="Ensure primitive integers are really integers."/>
       </c:changes>
     </c:release>
   </c:releases>

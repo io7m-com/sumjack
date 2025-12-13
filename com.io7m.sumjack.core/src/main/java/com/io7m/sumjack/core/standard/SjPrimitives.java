@@ -69,7 +69,7 @@ public enum SjPrimitives implements SjDefinitionProviderType
       return () -> {
         final var mapper = configuration.mapper();
         final var object = mapper.createObjectNode();
-        object.put("type", "number");
+        object.put("type", "integer");
         object.put("description", "A primitive byte.");
         object.put("minimum", Byte.MIN_VALUE);
         object.put("maximum", Byte.MAX_VALUE);
@@ -96,7 +96,7 @@ public enum SjPrimitives implements SjDefinitionProviderType
       return () -> {
         final var mapper = configuration.mapper();
         final var object = mapper.createObjectNode();
-        object.put("type", "number");
+        object.put("type", "integer");
         object.put("description", "A primitive short.");
         object.put("minimum", Short.MIN_VALUE);
         object.put("maximum", Short.MAX_VALUE);
@@ -123,7 +123,7 @@ public enum SjPrimitives implements SjDefinitionProviderType
       return () -> {
         final var mapper = configuration.mapper();
         final var object = mapper.createObjectNode();
-        object.put("type", "number");
+        object.put("type", "integer");
         object.put("description", "A primitive char.");
         object.put("minimum", Character.MIN_VALUE);
         object.put("maximum", Character.MAX_VALUE);
@@ -150,7 +150,7 @@ public enum SjPrimitives implements SjDefinitionProviderType
       return () -> {
         final var mapper = configuration.mapper();
         final var object = mapper.createObjectNode();
-        object.put("type", "number");
+        object.put("type", "integer");
         object.put("description", "A primitive int.");
         object.put("minimum", Integer.MIN_VALUE);
         object.put("maximum", Integer.MAX_VALUE);
@@ -177,7 +177,7 @@ public enum SjPrimitives implements SjDefinitionProviderType
       return () -> {
         final var mapper = configuration.mapper();
         final var object = mapper.createObjectNode();
-        object.put("type", "number");
+        object.put("type", "integer");
         object.put("description", "A primitive long.");
         object.put("minimum", Long.MIN_VALUE);
         object.put("maximum", Long.MAX_VALUE);
