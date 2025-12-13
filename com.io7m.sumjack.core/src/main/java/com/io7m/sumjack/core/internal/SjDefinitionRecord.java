@@ -64,12 +64,12 @@ final class SjDefinitionRecord
       props.set(name, ref);
     }
 
-    this.type.typeProperty().ifPresent(name -> {
+    this.type.typeProperty().ifPresent(attrib -> {
       final var typeProp = mapper.createObjectNode();
       typeProp.put("type", "string");
-      typeProp.put("pattern", name);
-      props.set("@type", typeProp);
-      required.add("@type");
+      typeProp.put("pattern", attrib.propertyValue());
+      props.set(attrib.propertyName(), typeProp);
+      required.add(attrib.propertyName());
     });
 
     for (final var name : this.type.methodRequired()) {
@@ -81,6 +81,7 @@ final class SjDefinitionRecord
     object.put("type", "object");
     object.set("properties", props);
     object.set("required", required);
+    object.put("additionalProperties", false);
     return object;
   }
 }
