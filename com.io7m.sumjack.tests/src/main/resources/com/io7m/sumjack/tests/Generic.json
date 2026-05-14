@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:example.com","title":"Example Schema","oneOf":[{"$ref":"#/$defs/Generic<Object>"}],"$defs":{"Generic<Object>":{"type":"object","properties":{"Value":{"$ref":"#/$defs/Object"}},"required":["Value"],"additionalProperties":false},"Object":{"type":"object"},"String":{"type":"string"}}}

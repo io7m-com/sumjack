@@ -14,21 +14,29 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-open module com.io7m.sumjack.tests
+package com.io7m.sumjack.core.internal;
+
+import com.io7m.sumjack.core.SjDefinitionType;
+import com.io7m.sumjack.core.SjGeneratorConfiguration;
+import tools.jackson.databind.node.ObjectNode;
+
+final class SjDefinitionObject
+  implements SjDefinitionType
 {
-  requires org.junit.jupiter.api;
-  requires org.junit.jupiter.engine;
-  requires org.junit.platform.commons;
-  requires org.junit.platform.engine;
-  requires org.junit.platform.launcher;
+  private final SjGeneratorConfiguration configuration;
 
-  requires com.io7m.lanark.core;
-  requires com.io7m.sumjack.core;
-  requires tools.jackson.databind;
-  requires com.io7m.sumjack.lanark;
-  requires org.slf4j;
-  requires com.io7m.seltzer.slf4j;
+  SjDefinitionObject(
+    final SjGeneratorConfiguration inConfiguration)
+  {
+    this.configuration = inConfiguration;
+  }
 
-  exports com.io7m.sumjack.tests;
-  exports com.io7m.sumjack.tests.bug19;
+  @Override
+  public ObjectNode execute()
+  {
+    final var mapper = this.configuration.mapper();
+    final var object = mapper.createObjectNode();
+    object.put("type", "object");
+    return object;
+  }
 }

@@ -264,13 +264,7 @@ public final class SjGeneratorTest
         .setRootType(Object.class)
         .build();
 
-    final var generator =
-      SjGenerators.create(config);
-    final var ex =
-      assertThrows(SjException.class, generator::execute);
-
-    SSLogging.logMDC(LOG, Level.DEBUG, ex);
-    assertEquals("error-no-definition", ex.errorCode());
+    runCheck(config, "Object.json");
   }
 
   @Test
@@ -295,13 +289,7 @@ public final class SjGeneratorTest
         .setRootType(Generic.class)
         .build();
 
-    final var generator =
-      SjGenerators.create(config);
-    final var ex =
-      assertThrows(SjException.class, generator::execute);
-
-    SSLogging.logMDC(LOG, Level.DEBUG, ex);
-    assertEquals("error-no-definition", ex.errorCode());
+    runCheck(config, "Generic.json");
   }
 
   private static void runCheck(

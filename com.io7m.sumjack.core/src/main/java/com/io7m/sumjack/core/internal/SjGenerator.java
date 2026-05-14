@@ -197,8 +197,17 @@ public final class SjGenerator
     final var subclasses = new ArrayList<SjFullyResolvedType>();
     final var rawSubclasses = rawSubclassesOf(type);
     for (final var subclass : rawSubclasses) {
-      final var bindings =
-        base.getTypeBindings().getTypeParameters();
+      final List<ResolvedType> bindings;
+      if (subclass instanceof final Class<?> subclazz) {
+        if (subclazz.getTypeParameters().length > 0) {
+          bindings = base.getTypeBindings().getTypeParameters();
+        } else {
+          bindings = List.of();
+        }
+      } else {
+        bindings = List.of();
+      }
+
       subclasses.add(resolve(subclass, bindings));
     }
 
@@ -409,6 +418,10 @@ public final class SjGenerator
   private SjDefinitionType createDefinition(
     final SjFullyResolvedType type)
   {
+    if (Objects.equals(type.type().getErasedType(), Object.class)) {
+      return new SjDefinitionObject(this.configuration);
+    }
+
     if (type.isSealedInterface()) {
       return new SjDefinitionSealedInterface(this.configuration, type);
     }
