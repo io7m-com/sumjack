@@ -6,12 +6,23 @@
         <c:change date="2025-12-11T00:00:00+00:00" summary="Initial version."/>
       </c:changes>
     </c:release>
-    <c:release date="2025-12-13T21:12:46+00:00" is-open="false" ticket-system="com.github.io7m.sumjack" version="2.0.0">
+    <c:release date="2025-12-13T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.sumjack" version="2.0.0">
       <c:changes>
         <c:change date="2025-12-13T00:00:00+00:00" summary="Respect @JsonTypeInfo to allow specifying a type attribute."/>
         <c:change compatible="false" date="2025-12-13T00:00:00+00:00" summary="Ensure primitive integers are really integers."/>
         <c:change compatible="false" date="2025-12-13T00:00:00+00:00" summary="Disallow additional properties on record types."/>
         <c:change date="2025-12-13T00:00:00+00:00" summary="Correct bounds on float and double values."/>
+      </c:changes>
+    </c:release>
+    <c:release date="2026-05-14T19:52:45+00:00" is-open="true" ticket-system="com.github.io7m.sumjack" version="2.1.0">
+      <c:changes>
+        <c:change date="2026-05-14T00:00:00+00:00" summary="Fix a generic error.">
+          <c:tickets>
+            <c:ticket id="19"/>
+          </c:tickets>
+        </c:change>
+        <c:change date="2026-05-14T00:00:00+00:00" summary="Add URI as a standard type."/>
+        <c:change date="2026-05-14T19:52:45+00:00" summary="Anchor patterns with ^ and $ for safety."/>
       </c:changes>
     </c:release>
   </c:releases>
