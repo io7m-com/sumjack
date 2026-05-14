@@ -14,13 +14,44 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * JSON schema generator (Standard types)
- */
-
-@Export
-@Version("1.1.0")
 package com.io7m.sumjack.core.standard;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+import com.io7m.sumjack.core.SjDefinitionProviderType;
+import com.io7m.sumjack.core.SjDefinitionType;
+import com.io7m.sumjack.core.SjGeneratorConfiguration;
+
+import java.net.URI;
+
+/**
+ * A URI string.
+ */
+
+public enum SjURI
+  implements SjDefinitionProviderType
+{
+  /**
+   * A URI string.
+   */
+
+  URI;
+
+  @Override
+  public String typeName()
+  {
+    return URI.class.getSimpleName();
+  }
+
+  @Override
+  public SjDefinitionType create(
+    final SjGeneratorConfiguration configuration)
+  {
+    return () -> {
+      final var mapper = configuration.mapper();
+      final var object = mapper.createObjectNode();
+      object.put("description", "An RFC 3986 URI string.");
+      object.put("type", "string");
+      object.put("format", "uri");
+      return object;
+    };
+  }
+}

@@ -14,13 +14,18 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * JSON schema generator (Standard types)
- */
+package com.io7m.sumjack.tests;
 
-@Export
-@Version("1.1.0")
-package com.io7m.sumjack.core.standard;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+import java.net.URI;
+import java.util.UUID;
+
+public record SimpleContainsURI(
+  @JsonProperty("URI")
+  @JsonPropertyDescription("A URI.")
+  URI value)
+{
+
+}

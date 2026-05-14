@@ -21,6 +21,7 @@ import com.io7m.sumjack.core.SjException;
 import com.io7m.sumjack.core.SjGeneratorConfiguration;
 import com.io7m.sumjack.core.SjGenerators;
 import com.io7m.sumjack.core.standard.SjPrimitives;
+import com.io7m.sumjack.core.standard.SjURI;
 import com.io7m.sumjack.core.standard.SjUUID;
 import com.io7m.sumjack.lanark.SjDottedName;
 import org.junit.jupiter.api.Test;
@@ -214,6 +215,19 @@ public final class SjGeneratorTest
         .build();
 
     runCheck(config, "UUID.json");
+  }
+
+  @Test
+  public void testURI()
+    throws Exception
+  {
+    final var config =
+      builder()
+        .setRootType(SimpleContainsURI.class)
+        .addDefinitions(SjURI.URI)
+        .build();
+
+    runCheck(config, "URI.json");
   }
 
   @Test
