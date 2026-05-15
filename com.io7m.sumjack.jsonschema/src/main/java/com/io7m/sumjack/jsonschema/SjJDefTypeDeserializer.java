@@ -1,0 +1,99 @@
+/*
+ * Copyright © 2026 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+package com.io7m.sumjack.jsonschema;
+
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.exc.MismatchedInputException;
+
+import java.util.List;
+
+public final class SjJDefTypeDeserializer
+  extends ValueDeserializer<SjJDefType>
+{
+  public SjJDefTypeDeserializer()
+  {
+
+  }
+
+  @Override
+  public SjJDefType deserialize(
+    final JsonParser p,
+    final DeserializationContext ctxt)
+  {
+    final JsonNode node = p.readValueAsTree();
+
+    if (node.has("$ref")) {
+      return ctxt.readTreeAsValue(node, SjJRef.class);
+    }
+
+    if (node.has("oneOf")) {
+      final var array = node.get("oneOf");
+
+      final List<SjJRef> refs =
+        ctxt.readTreeAsValue(
+          array,
+          ctxt.getTypeFactory()
+            .constructCollectionType(List.class, SjJRef.class)
+        );
+
+      return new SjJDefOneOf(refs);
+    }
+
+    final String type =
+      node.path("type")
+        .asString(null);
+
+    if (type == null) {
+      throw MismatchedInputException.from(
+        p,
+        SjJDefType.class,
+        "No type property is present."
+      );
+    }
+
+    return switch (type) {
+      case "array" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefArray.class);
+      }
+      case "object" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefObject.class);
+      }
+      case "string" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefString.class);
+      }
+      case "boolean" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefBoolean.class);
+      }
+      case "integer" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefInteger.class);
+      }
+      case "number" -> {
+        yield ctxt.readTreeAsValue(node, SjJDefNumber.class);
+      }
+      default -> {
+        throw MismatchedInputException.from(
+          p,
+          SjJDefType.class,
+          "Unknown schema type: " + type
+        );
+      }
+    };
+  }
+}

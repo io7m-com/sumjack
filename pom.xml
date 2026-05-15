@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -21,6 +23,7 @@
   <modules>
     <module>com.io7m.sumjack.bom</module>
     <module>com.io7m.sumjack.core</module>
+    <module>com.io7m.sumjack.jsonschema</module>
     <module>com.io7m.sumjack.lanark</module>
     <module>com.io7m.sumjack.tests</module>
   </modules>
@@ -132,7 +135,7 @@
       <dependency>
         <groupId>tools.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -150,6 +153,16 @@
         <groupId>com.fasterxml</groupId>
         <artifactId>classmate</artifactId>
         <version>1.7.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jgrapht</groupId>
+        <artifactId>jgrapht-core</artifactId>
+        <version>1.5.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.io7m.jaffirm</groupId>
+        <artifactId>com.io7m.jaffirm.core</artifactId>
+        <version>4.0.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

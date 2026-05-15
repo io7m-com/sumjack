@@ -1,0 +1,447 @@
+{
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "urn:com.io7m.softleaf:1.0",
+  "title" : "Softleaf 1.0",
+  "oneOf" : [ {
+    "$ref" : "#/$defs/SLMessageType"
+  } ],
+  "$defs" : {
+    "List<SLAuditEvent>" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/$defs/SLAuditEvent"
+      }
+    },
+    "Map<String,String>" : {
+      "type" : "object",
+      "additionalProperties" : {
+        "$ref" : "#/$defs/String"
+      }
+    },
+    "OffsetDateTime" : {
+      "description" : "An ISO 8601 timestamp.",
+      "type" : "string",
+      "format" : "date-time"
+    },
+    "Optional<SLProjectDefinitionType>" : {
+      "$ref" : "#/$defs/SLProjectDefinitionType"
+    },
+    "Optional<URI>" : {
+      "$ref" : "#/$defs/URI"
+    },
+    "RDottedName" : {
+      "type" : "string",
+      "description" : "A Lanark dotted name.",
+      "pattern" : "([a-z][a-z0-9_-]{0,63})(\\.[a-z][a-z0-9_-]{0,62}){0,15}"
+    },
+    "SLAuditEvent" : {
+      "type" : "object",
+      "properties" : {
+        "Data" : {
+          "$ref" : "#/$defs/Map<String,String>"
+        },
+        "ID" : {
+          "$ref" : "#/$defs/long"
+        },
+        "Time" : {
+          "$ref" : "#/$defs/OffsetDateTime"
+        },
+        "Type" : {
+          "$ref" : "#/$defs/String"
+        },
+        "User" : {
+          "$ref" : "#/$defs/SLUserID"
+        }
+      },
+      "required" : [ "ID", "Time", "Type", "User" ],
+      "additionalProperties" : false
+    },
+    "SLAuditGet" : {
+      "type" : "object",
+      "properties" : {
+        "Count" : {
+          "$ref" : "#/$defs/int"
+        },
+        "Start" : {
+          "$ref" : "#/$defs/long"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^AuditGet$"
+        }
+      },
+      "required" : [ "@MessageType", "Count", "Start" ],
+      "additionalProperties" : false
+    },
+    "SLAuditGetResponse" : {
+      "type" : "object",
+      "properties" : {
+        "Events" : {
+          "description" : "The audit events.",
+          "$ref" : "#/$defs/List<SLAuditEvent>"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^AuditGetResponse$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLCommandResponseType" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLAuditGetResponse"
+      }, {
+        "$ref" : "#/$defs/SLEmptyResponse"
+      }, {
+        "$ref" : "#/$defs/SLProjectGetResponse"
+      } ]
+    },
+    "SLCommandType<SLCommandResponseType>" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLAuditGet"
+      }, {
+        "$ref" : "#/$defs/SLProjectGet"
+      }, {
+        "$ref" : "#/$defs/SLProjectPut"
+      } ]
+    },
+    "SLEmptyResponse" : {
+      "type" : "object",
+      "properties" : {
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^EmptyResponse$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLError" : {
+      "type" : "object",
+      "properties" : {
+        "ErrorAttributes" : {
+          "description" : "The error attributes.",
+          "$ref" : "#/$defs/Map<String,String>"
+        },
+        "ErrorCode" : {
+          "description" : "The error code.",
+          "$ref" : "#/$defs/String"
+        },
+        "ErrorMessage" : {
+          "description" : "The error message.",
+          "$ref" : "#/$defs/String"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^Error$"
+        }
+      },
+      "required" : [ "@MessageType", "ErrorAttributes", "ErrorCode", "ErrorMessage" ],
+      "additionalProperties" : false
+    },
+    "SLLoginCommandComplete" : {
+      "type" : "object",
+      "properties" : {
+        "SessionID" : {
+          "description" : "The session ID.",
+          "$ref" : "#/$defs/String"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginCommandComplete$"
+        }
+      },
+      "required" : [ "@MessageType", "SessionID" ],
+      "additionalProperties" : false
+    },
+    "SLLoginCommandStart" : {
+      "type" : "object",
+      "properties" : {
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginCommandStart$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLLoginCommandType" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLLoginCommandComplete"
+      }, {
+        "$ref" : "#/$defs/SLLoginCommandStart"
+      } ]
+    },
+    "SLLoginInfo" : {
+      "type" : "object",
+      "properties" : {
+        "AuthenticationScheme" : {
+          "description" : "The authentication scheme used.",
+          "$ref" : "#/$defs/String"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginInfo$"
+        }
+      },
+      "required" : [ "@MessageType", "AuthenticationScheme" ],
+      "additionalProperties" : false
+    },
+    "SLLoginResponseCompleted" : {
+      "type" : "object",
+      "properties" : {
+        "BearerToken" : {
+          "description" : "The bearer token.",
+          "$ref" : "#/$defs/String"
+        },
+        "UserID" : {
+          "description" : "The user ID",
+          "$ref" : "#/$defs/SLUserID"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginResponseCompleted$"
+        }
+      },
+      "required" : [ "@MessageType", "BearerToken", "UserID" ],
+      "additionalProperties" : false
+    },
+    "SLLoginResponseFailed" : {
+      "type" : "object",
+      "properties" : {
+        "ErrorAttributes" : {
+          "description" : "The error attributes.",
+          "$ref" : "#/$defs/Map<String,String>"
+        },
+        "ErrorCode" : {
+          "description" : "The error code.",
+          "$ref" : "#/$defs/String"
+        },
+        "ErrorMessage" : {
+          "description" : "The error message.",
+          "$ref" : "#/$defs/String"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginResponseFailed$"
+        }
+      },
+      "required" : [ "@MessageType", "ErrorAttributes", "ErrorCode", "ErrorMessage" ],
+      "additionalProperties" : false
+    },
+    "SLLoginResponseType" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLLoginResponseCompleted"
+      }, {
+        "$ref" : "#/$defs/SLLoginResponseFailed"
+      }, {
+        "$ref" : "#/$defs/SLLoginResponseVerificationRequired"
+      } ]
+    },
+    "SLLoginResponseVerificationRequired" : {
+      "type" : "object",
+      "properties" : {
+        "Expires" : {
+          "$ref" : "#/$defs/OffsetDateTime"
+        },
+        "SessionID" : {
+          "$ref" : "#/$defs/String"
+        },
+        "UserCode" : {
+          "$ref" : "#/$defs/String"
+        },
+        "VerificationURI" : {
+          "$ref" : "#/$defs/URI"
+        },
+        "VerificationURIComplete" : {
+          "$ref" : "#/$defs/Optional<URI>"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^LoginResponseVerificationRequired$"
+        }
+      },
+      "required" : [ "@MessageType", "Expires", "SessionID", "UserCode", "VerificationURI" ],
+      "additionalProperties" : false
+    },
+    "SLMessageType" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLCommandResponseType"
+      }, {
+        "$ref" : "#/$defs/SLCommandType<SLCommandResponseType>"
+      }, {
+        "$ref" : "#/$defs/SLError"
+      }, {
+        "$ref" : "#/$defs/SLLoginCommandType"
+      }, {
+        "$ref" : "#/$defs/SLLoginInfo"
+      }, {
+        "$ref" : "#/$defs/SLLoginResponseType"
+      }, {
+        "$ref" : "#/$defs/SLTransaction"
+      }, {
+        "$ref" : "#/$defs/SLTransactionResponse"
+      } ]
+    },
+    "SLProjectDefinitionMaven" : {
+      "type" : "object",
+      "properties" : {
+        "ArtifactID" : {
+          "$ref" : "#/$defs/RDottedName"
+        },
+        "GroupID" : {
+          "$ref" : "#/$defs/RDottedName"
+        },
+        "ID" : {
+          "$ref" : "#/$defs/SLProjectID"
+        },
+        "Name" : {
+          "$ref" : "#/$defs/String"
+        },
+        "@Type" : {
+          "type" : "string",
+          "pattern" : "^Maven$"
+        }
+      },
+      "required" : [ "@Type", "ArtifactID", "GroupID", "ID", "Name" ],
+      "additionalProperties" : false
+    },
+    "SLProjectDefinitionType" : {
+      "oneOf" : [ {
+        "$ref" : "#/$defs/SLProjectDefinitionMaven"
+      } ]
+    },
+    "SLProjectGet" : {
+      "type" : "object",
+      "properties" : {
+        "Project" : {
+          "$ref" : "#/$defs/SLProjectID"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^ProjectGet$"
+        }
+      },
+      "required" : [ "@MessageType", "Project" ],
+      "additionalProperties" : false
+    },
+    "SLProjectGetResponse" : {
+      "type" : "object",
+      "properties" : {
+        "Project" : {
+          "description" : "The project.",
+          "$ref" : "#/$defs/Optional<SLProjectDefinitionType>"
+        },
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^ProjectGetResponse$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLProjectID" : {
+      "description" : "An RFC 9562 UUID string.",
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "SLProjectPut" : {
+      "type" : "object",
+      "properties" : {
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^ProjectPut$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLTransaction" : {
+      "type" : "object",
+      "properties" : {
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^Transaction$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLTransactionResponse" : {
+      "type" : "object",
+      "properties" : {
+        "@MessageType" : {
+          "type" : "string",
+          "pattern" : "^TransactionResponse$"
+        }
+      },
+      "required" : [ "@MessageType" ],
+      "additionalProperties" : false
+    },
+    "SLUserID" : {
+      "description" : "An RFC 9562 UUID string.",
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "String" : {
+      "type" : "string"
+    },
+    "URI" : {
+      "description" : "An RFC 3986 URI string.",
+      "type" : "string",
+      "format" : "uri"
+    },
+    "UUID" : {
+      "description" : "An RFC 9562 UUID string.",
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "boolean" : {
+      "type" : "boolean",
+      "description" : "A boolean value."
+    },
+    "byte" : {
+      "type" : "integer",
+      "description" : "A primitive byte.",
+      "minimum" : -128,
+      "maximum" : 127
+    },
+    "char" : {
+      "type" : "integer",
+      "description" : "A primitive char.",
+      "minimum" : 0,
+      "maximum" : 65535
+    },
+    "double" : {
+      "type" : "number",
+      "minimum" : -1.7976931348623157E308,
+      "maximum" : 1.7976931348623157E308,
+      "description" : "An IEEE764 64-bit floating point value."
+    },
+    "float" : {
+      "type" : "number",
+      "minimum" : -3.4028235E38,
+      "maximum" : 3.4028235E38,
+      "description" : "An IEEE764 32-bit floating point value."
+    },
+    "int" : {
+      "type" : "integer",
+      "description" : "A primitive int.",
+      "minimum" : -2147483648,
+      "maximum" : 2147483647
+    },
+    "long" : {
+      "type" : "integer",
+      "description" : "A primitive long.",
+      "minimum" : -9223372036854775808,
+      "maximum" : 9223372036854775807
+    },
+    "short" : {
+      "type" : "integer",
+      "description" : "A primitive short.",
+      "minimum" : -32768,
+      "maximum" : 32767
+    }
+  }
+}
