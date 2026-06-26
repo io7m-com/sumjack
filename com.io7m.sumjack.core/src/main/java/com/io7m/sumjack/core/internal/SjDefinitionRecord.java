@@ -65,10 +65,9 @@ final class SjDefinitionRecord
     }
 
     this.type.typeProperty().ifPresent(attrib -> {
-      final var pattern = "^%s$".formatted(attrib.propertyValue());
       final var typeProp = mapper.createObjectNode();
       typeProp.put("type", "string");
-      typeProp.put("pattern", pattern);
+      typeProp.put("const", attrib.propertyValue());
       props.set(attrib.propertyName(), typeProp);
       required.add(attrib.propertyName());
     });
